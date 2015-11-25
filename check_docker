@@ -54,14 +54,22 @@ def main():
 	# Add any new metrics, or change default thresholds here. 
 	metrics = [ 
 		['Containers',0,0],
-		['Debug',0,0],
-		['IPv4Forwarding',0,0],
-		['Images',0,0],
-		['MemoryLimit',0,0],
-		['NEventsListener',0,0],
-		['NFd',0,0],
-		['NGoroutines',0,0],
-		['SwapLimit',0,0]
+                ['Debug',0,0],
+                ['IPv4Forwarding',0,0],
+                ['BridgeNfIp6tables',0,0],
+                ['Images',0,0],
+                ['MemoryLimit',0,0],
+                ['MemTotal',0,0],
+                ['OomKillDisable',0,0],
+                ['NEventsListener',0,0],
+                ['NFd',0,0],
+                ['ExperimentalBuild',0,0],
+                ['BridgeNfIptables',0,0],
+                ['CpuCfsQuota',0,0],
+                ['CpuCfsPeriod',0,0],
+                ['NCPU',0,0],
+                ['NGoroutines',0,0],
+                ['SwapLimit',0,0]
 	]
 
 	args = args.parse_args()
