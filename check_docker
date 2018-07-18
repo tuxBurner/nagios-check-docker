@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import nagiosplugin
 import docker
@@ -11,8 +11,8 @@ import argparse
 	their names out of the API.
 
 	This plugin should be rather immune to changes in the underlying Docker API. If
-	things are added to info(), the plugin doesn't have to be updated immediately to pull 
-	in new identifiers but can be controlled via commandline arguments. 
+	things are added to info(), the plugin doesn't have to be updated immediately to pull
+	in new identifiers but can be controlled via commandline arguments.
 
 '''
 class Docker(nagiosplugin.Resource):
@@ -20,12 +20,12 @@ class Docker(nagiosplugin.Resource):
 		self.url = url
 
 	def probe(self):
-		
+
 		try:
-			conn = docker.Client(base_url=self.url, timeout=20)
+			conn = docker.DockerClient(base_url=self.url, timeout=20)
 			docker_info = conn.info()
 			self.running = 0
-		except:
+		except Exception as inst:
 			self.running = 1
 
 		yield nagiosplugin.Metric('service', self.running)
@@ -33,9 +33,9 @@ class Docker(nagiosplugin.Resource):
 			for k,v in docker_info.items():
 				# Only pick numbers that we can generate metrics from
 				# Nagios is not a config management system.
-				if isinstance(v, (int, long, float, complex)):
+				if isinstance(v, (int, int, float, complex)):
 					yield nagiosplugin.Metric(k, v)
-	
+
 # Extend nagiosplugin.Summary so we get verbosity
 class DockerSummary(nagiosplugin.Summary):
 	def verbose(self, results):
@@ -51,25 +51,32 @@ def main():
 	args.add_argument('-m', '--metric', nargs=3, action='append', help='<metric name> <warning> <critical>')
 
 	# Defaults for metrics we know about. Can be overridden with -m/--metric option
-	# Add any new metrics, or change default thresholds here. 
-	metrics = [ 
+	# Add any new metrics, or change default thresholds here.
+	metrics = [
 		['Containers',0,0],
-                ['Debug',0,0],
-                ['IPv4Forwarding',0,0],
-                ['BridgeNfIp6tables',0,0],
-                ['Images',0,0],
-                ['MemoryLimit',0,0],
-                ['MemTotal',0,0],
-                ['OomKillDisable',0,0],
-                ['NEventsListener',0,0],
-                ['NFd',0,0],
-                ['ExperimentalBuild',0,0],
-                ['BridgeNfIptables',0,0],
-                ['CpuCfsQuota',0,0],
-                ['CpuCfsPeriod',0,0],
-                ['NCPU',0,0],
-                ['NGoroutines',0,0],
-                ['SwapLimit',0,0]
+        ['Debug',0,0],
+        ['IPv4Forwarding',0,0],
+        ['BridgeNfIp6tables',0,0],
+        ['Images',0,0],
+        ['MemoryLimit',0,0],
+        ['MemTotal',0,0],
+        ['OomKillDisable',0,0],
+        ['NEventsListener',0,0],
+        ['NFd',0,0],
+        ['ExperimentalBuild',0,0],
+        ['BridgeNfIptables',0,0],
+        ['CpuCfsQuota',0,0],
+        ['CpuCfsPeriod',0,0],
+        ['NCPU',0,0],
+        ['NGoroutines',0,0],
+        ['SwapLimit',0,0],
+        ['LiveRestoreEnabled',0,0],
+        ['KernelMemory',0,0],
+        ['CPUSet',0,0],
+        ['ContainersStopped',0,0],
+        ['ContainersPaused',0,0],
+        ['ContainersRunning',0,0],
+        ['CPUShares',0,0]
 	]
 
 	args = args.parse_args()
@@ -96,4 +103,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-

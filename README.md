@@ -5,10 +5,10 @@ This plugin checks that the docker daemon can be connected to and queried remote
 The plugin is designed to be forward-compatible. If the data returned by the API changes, command line options allow it to be configured to receive new metrics. It has been tested with Docker 0.8 and 0.9 on both Debian Wheezy and Ubuntu 13.10.
 
 ### Requirements
-* Python
+* Python3
 * Pip
 * Nagios 3+
-* docker-py
+* docker
 * nagiosplugin
 
 ### Installation
@@ -59,13 +59,13 @@ The plugin automatically checks that the docker service is reachable and gathers
 
 The default thresholds are 0 for both Critical and Warning, so they will not cause an alarm.
 
-You can add arbitrary new metrics to be gathered by the plugin that are returned by the `docker info` command. Simply add a `-m <metric name> <warning> <critical>` command line option to the command_line in Nagios' config. This also allows you to override the default metric thresholds. 
+You can add arbitrary new metrics to be gathered by the plugin that are returned by the `docker info` command. Simply add a `-m <metric name> <warning> <critical>` command line option to the command_line in Nagios' config. This also allows you to override the default metric thresholds.
 
 For instance:
 
 ```
 define command{
     command_name    check_docker
-    command_line    /usr/local/bin/check_docker -m Containers 150 200 
+    command_line    /usr/local/bin/check_docker -m Containers 150 200
 }
 ```
